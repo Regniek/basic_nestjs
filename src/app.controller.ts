@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -15,10 +15,18 @@ export class AppController {
     return 'yo soy nuevo';
   }
 
-  @Get('/ruta/')
-  helloWorld(): string {
-    return 'hola mundo';
+  @Get('/products/:productId')
+  // se puede modificar la forma de ingresar parametros cambiar el params por el parametro especifico y colocar su tipo
+  getProduct(@Param('productId') productId: string) {
+    return `product ${productId}`;
   }
+
+  // de esta manera s epueden recibir dos parametros en una misma ruta
+  @Get('/categories/:categoryId/products/:productId')
+  geCategory(@Param('productId') productId: string, @Param('categoryId') categoryId: string) {
+    return `product ${productId} and category ${categoryId}`;
+  }
+
 
 }
 
