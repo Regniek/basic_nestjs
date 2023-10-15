@@ -1,4 +1,17 @@
-import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  // esto es un pipe de nest js para validar los parametros de entrada
+  //ParseIntPipe
+} from '@nestjs/common';
 
 // esta linea tiene res par ausar express como status code import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpStatus, Res } from '@nestjs/common';
 // con res en nest js mas response de express podemos manejar los status code desde node directamente
@@ -6,13 +19,20 @@ import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpS
 // des esta manera importamos el servicio
 import { ProductsService } from '../services/products.service';
 
+// aca empezamos a utilizar nuestro propio pipe
+import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
+
 // este decorador es especifico de los controladores
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
   @Get()
   // puedo asignar un valor especifico por defecto a un parametro y typescript ya entendera que todo lo que ingrese debe ser de ese tipo de dato
-  getProducts(@Query('limit') limit= 100 , @Query('offset') offset= 0, @Query('brand') brand: number) {
+  getProducts(
+    @Query('limit') limit = 100,
+    @Query('offset') offset = 0,
+    @Query('brand') brand: number,
+  ) {
     // return {
     //   message: `products limit ${limit} and offset ${offset}`
     // };
@@ -24,22 +44,21 @@ export class ProductsController {
   @Get('/filter')
   getProductFilter() {
     return {
-      message: 'yo soy un filter'
+      message: 'yo soy un filter',
     };
   }
-
 
   @Get('/:productId')
   // esta es la manera d emanejar status code ds de nest js
   @HttpCode(HttpStatus.ACCEPTED)
   // se puede modificar la forma de ingresar parametros cambiar el params por el parametro especifico y colocar su tipo
   //esta es la forma exprese vamos a dejarlo timpop nest getOne(@Res() response: Response, @Param('productId') productId: string) {
-  getOne(@Param('productId') productId: string) {
+  getOne(@Param('productId', ParseIntPipe) productId: number) {
     //con express lo enviariamos de la manera clasica con response
     // response.status(200).send({
     //   message: `product ${productId}`
     // });
-    return this.productsService.findOne(+productId);
+    return this.productsService.findOne(productId);
   }
 
   @Post()
@@ -69,5 +88,4 @@ export class ProductsController {
     // };
     return this.productsService.delete(id);
   }
-
 }
