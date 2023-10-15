@@ -21,6 +21,8 @@ import { ProductsService } from '../services/products.service';
 
 // aca empezamos a utilizar nuestro propio pipe
 import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
+// de esta maner aimportamos lso dtos del producto
+import { CreateProductDto, UpdateProductDto } from '../dtos/products.dtos';
 
 // este decorador es especifico de los controladores
 @Controller('products')
@@ -64,7 +66,7 @@ export class ProductsController {
   @Post()
   // esta es la manera de manejar los body
   // no es eficiente especificar el body solo en dado caso que sea necesario
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateProductDto) {
     // return {
     //   message: 'accion de crear',
     //   payload
@@ -73,7 +75,7 @@ export class ProductsController {
   }
 
   @Put('/:id')
-  update(@Param('id') id: number, @Body() payload: any) {
+  update(@Param('id') id: number, @Body() payload: UpdateProductDto) {
     // return {
     //   id,
     //   payload
