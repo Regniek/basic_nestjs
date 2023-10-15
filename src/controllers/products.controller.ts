@@ -1,6 +1,8 @@
-import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+
+// esta linea tiene res par ausar express como status code import { Controller, Get, Query, Param, Post, Body, Put, Delete, HttpCode, HttpStatus, Res } from '@nestjs/common';
 // con res en nest js mas response de express podemos manejar los status code desde node directamente
-import { Response } from 'express';
+//import { Response } from 'express';
 // des esta manera importamos el servicio
 import { ProductsService } from '../services/products.service';
 
@@ -31,7 +33,8 @@ export class ProductsController {
   // esta es la manera d emanejar status code ds de nest js
   @HttpCode(HttpStatus.ACCEPTED)
   // se puede modificar la forma de ingresar parametros cambiar el params por el parametro especifico y colocar su tipo
-  getOne(@Res() response: Response, @Param('productId') productId: string) {
+  //esta es la forma exprese vamos a dejarlo timpop nest getOne(@Res() response: Response, @Param('productId') productId: string) {
+  getOne(@Param('productId') productId: string) {
     //con express lo enviariamos de la manera clasica con response
     // response.status(200).send({
     //   message: `product ${productId}`

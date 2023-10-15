@@ -40,6 +40,7 @@ export class ProductsService {
     if (product) {
       const index = this.products.findIndex(item => item.id === id);
       this.products[index] = {
+        // de esta manera se maneja el merge en js con el operador spread
         ...product,
         ...payload
       };
